@@ -10,12 +10,17 @@ export async function GET () {
 export async function POST (request: Request) {
     const newTask = await request.json();
 
-    const createdTask = await db.insert(tasks).values({
-        title: newTask.name,
-        description: newTask.description,
-        dueDate: new Date(newTask.dueDate),
-        completed: newTask.completed,
-    }).returning();
+    let createdTask;
+    try {
+        createdTask = await db.insert(tasks).values({
+            title: newTask.name,
+            description: newTask.description,
+            dueDate: new Date(newTask.dueDate),
+            completed: newTask.completed,
+        }).returning();
+    } catch (error) {
+        return NextResponse.json({ error: `Failed to create task: ${error}` }, { status: 500 });
+    }
 
     return NextResponse.json(createdTask, { status: 201});
 }
