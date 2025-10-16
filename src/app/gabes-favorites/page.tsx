@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { type gabesFavorites } from "@/server/db/schema";
 
-export default function page() {
+export default function GabesFavoritesPage() {
     const [favorites, setFavorites] = useState<gabesFavorites[]>([]);
 
     useEffect(() => {
