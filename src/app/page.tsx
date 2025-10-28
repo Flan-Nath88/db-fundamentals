@@ -1,13 +1,20 @@
 import { type Task } from "@/server/db/schema";
 import * as actions from "@/server/actions"
 import TaskForm from "@/components/task-form";
+import { auth } from "@/auth"
 
 export default async function Home() {  
   const tasks: Task[] = await actions.getTasks();
+  const session = await auth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950 dark:to-indigo-950">
       {/* Decorative Background Elements */}
+      {session ? (
+        <h1>Welcome, {session.user?.name}</h1>
+      ): (
+        <h1>Please sign in to continue</h1>
+      )}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
